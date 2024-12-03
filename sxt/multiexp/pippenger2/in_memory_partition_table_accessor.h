@@ -25,6 +25,7 @@
 #include "sxt/base/device/memory_utility.h"
 #include "sxt/base/error/assert.h"
 #include "sxt/base/error/panic.h"
+#include "sxt/base/memory/alloc.h"
 #include "sxt/memory/management/managed_array.h"
 #include "sxt/memory/resource/pinned_resource.h"
 #include "sxt/multiexp/pippenger2/partition_table_accessor.h"
@@ -37,9 +38,10 @@ template <class T>
 class in_memory_partition_table_accessor final : public partition_table_accessor<T> {
 
 public:
-  explicit in_memory_partition_table_accessor(std::string_view filename) noexcept
-      : table_{memr::get_pinned_resource()} {
-    std::ifstream in{filename, std::ios::binary};
+  explicit in_memory_partition_table_accessor(
+      std::string_view filename, basm::alloc_t alloc = memr::get_pinned_resource()) noexcept
+      : table_{alloc} {
+    std::ifstream in{std::string{filename}, std::ios::binary};
     if (!in.good()) {
       baser::panic("failed to open {}: {}", filename, std::strerror(errno));
     }
@@ -78,7 +80,7 @@ public:
   }
 
   void write_to_file(std::string_view filename) const noexcept override {
-    std::ofstream out{filename, std::ios::binary};
+    std::ofstream out{std::string{filename}, std::ios::binary};
     if (!out.good()) {
       baser::panic("failed to open {}: {}", filename, std::strerror(errno));
     }

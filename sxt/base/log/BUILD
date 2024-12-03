@@ -12,12 +12,12 @@ cc_library(
         "setup.h",
     ],
     copts = [
-        "-stdlib=libc++",
         "-std=c++20",
     ],
     implementation_deps = [
         "@com_github_gabime_spdlog//:libspdlog",
     ],
+    linkstatic = 1,
 )
 
 cc_library(
@@ -29,13 +29,13 @@ cc_library(
         "log_impl.h",
     ],
     copts = [
-        "-stdlib=libc++",
         "-std=c++20",
     ],
     implementation_deps = [
         ":setup",
         "@com_github_gabime_spdlog//:libspdlog",
     ],
+    linkstatic = 1,
 )
 
 sxt_cc_component(

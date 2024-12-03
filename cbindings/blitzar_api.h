@@ -28,7 +28,7 @@ extern "C" {
 #define SXT_CURVE_RISTRETTO255 0
 #define SXT_CURVE_BLS_381 1
 #define SXT_CURVE_BN_254 2
-#define SXT_CURVE_GRUMPKIN 2
+#define SXT_CURVE_GRUMPKIN 3
 
 /** config struct to hold the chosen backend */
 struct sxt_config {
@@ -577,6 +577,24 @@ int sxt_curve25519_verify_inner_product(struct sxt_transcript* transcript, uint6
  */
 struct sxt_multiexp_handle* sxt_multiexp_handle_new(unsigned curve_id, const void* generators,
                                                     unsigned n);
+
+/**
+ * Use a serialized file to create a handle for computing multiexponentiations using a fixed
+ * sequence of generators.
+ *
+ * Reading the handle from a file can be significantly faster than calling
+ * sxt_multiexp_handle_new.
+ */
+struct sxt_multiexp_handle* sxt_multiexp_handle_new_from_file(unsigned curve_id,
+                                                              const char* filename);
+
+/**
+ * Write a multiexponentiation handle to file.
+ *
+ * Use this function in combination with sxt_multiexp_handle_new_from_file.
+ */
+void sxt_multiexp_handle_write_to_file(const struct sxt_multiexp_handle* handle,
+                                       const char* filename);
 
 /**
  * Free resources for a multiexponentiation handle

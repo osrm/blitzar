@@ -44,7 +44,7 @@
   </a>
 
   <a href="https://developer.nvidia.com/cuda-downloads">
-    <img alt="CUDA" src="https://img.shields.io/badge/CUDA-12.3-green?style=flat&logo=nvidia">
+    <img alt="CUDA" src="https://img.shields.io/badge/CUDA-12.6-green?style=flat&logo=nvidia">
     </a>
   </a>
 
@@ -61,9 +61,9 @@
 Blitzar was created by the core cryptography team at [Space and Time](https://www.spaceandtime.io/) to accelerate Proof of SQL, a novel zero-knowledge proof for SQL operations. After surveying our options for a GPU acceleration framework, we realized that Proof of SQL needed something better… so we built Blitzar. Now, Proof of SQL runs with a 3.2 second proving time against a million-row table on a single GPU, and it’s only getting faster.
 
 We’ve open-sourced Blitzar to provide the Web3 community with a faster and more
-robust framework for building GPU-accelerated zk-proofs. We’re excited to open
+robust framework for building GPU-accelerated ZK proofs. We’re excited to open
 the project to community contributions to expand the scope of Blitzar and lay
-the foundation for the next wave of lightning fast zk-proofs.
+the foundation for the next wave of lightning fast ZK proofs.
 
 #### Overview
 Blitzar is a C++ library for accelerating cryptographic zero-knowledge proof algorithms on the CPU and GPU.
@@ -92,7 +92,7 @@ For most users, we recommend installing with cargo via [blitzar-rs](https://gith
 Alternatively, users that want to use the c api directly can download the shared library and header file from the github release.
 
 #### Computational Backends
-Although the primary goal of this library is to provide GPU acceleration for cryptographic zk-proof algorithms, the library also provides CPU support for the sake of testing. The following backends are supported:
+Although the primary goal of this library is to provide GPU acceleration for cryptographic ZK proof algorithms, the library also provides CPU support for the sake of testing. The following backends are supported:
 
 | Backend            | Implementation                                             | Target Hardware             |
 | :---               | :---                                                       | :---                        |
@@ -182,7 +182,7 @@ See the [example](./example) folder for some examples.
 Prerequisites:
 * `x86_64` Linux instance.
 * Nix with flake support (check out [The Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer))
-* Nvidia GPU capable of running CUDA 12.3 code.
+* Nvidia GPU capable of running CUDA 12.6 code.
 
 From your terminal, run the following command in the root of the source directory to set
 up a build environment. 

@@ -14,27 +14,25 @@ concurrency:
 jobs:
   format-code:
     name: Check code
-    runs-on: self-hosted
+    runs-on: public-blitzar-T4-gpu-vm
     timeout-minutes: 600
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
   
       - name: Run check
-        run: >
-          nix develop --command ./tools/code_format/check_format.py check
+        run: nix develop --command ./tools/code_format/check_format.py check
   
   test-cpp:
     name: C++ code
-    runs-on: self-hosted
+    runs-on: public-blitzar-T4-gpu-vm
     timeout-minutes: 600
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-  
+
       - name: Run cpp tests
-        run: >
-          TEST_TMPDIR=$HOME/.bazel_test nix develop --command bazel test //...
+        run: TEST_TMPDIR=$HOME/.bazel_test nix develop --command bazel test //...
   
           # Note: There are some steps we need to our
           # to our custom nix derivation from https://github.com/spaceandtimelabs/blitzar/pull/96
@@ -44,7 +42,7 @@ jobs:
           #
           # test-cpp-compute-sanitizer:
           #   name: C++ code with compute sanitizer
-          #   runs-on: self-hosted
+          #   runs-on: public-blitzar-T4-gpu-vm
           #   timeout-minutes: 600
           #   steps:
           #     - name: Checkout Code
@@ -65,31 +63,29 @@ jobs:
          
   test-cpp-opt:
     name: C++ code with optimizations
-    runs-on: self-hosted
+    runs-on: public-blitzar-T4-gpu-vm
     timeout-minutes: 600
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
   
       - name: Run cpp tests with optimization flags on
-        run: >
-          TEST_TMPDIR=$HOME/.bazel_test_opt nix develop --command bazel test --jobs=1 -c opt //...
+        run: TEST_TMPDIR=$HOME/.bazel_test_opt nix develop --command bazel test --jobs=1 -c opt //...
   
   test-cpp-asan:
     name: C++ code with address sanitizer
-    runs-on: self-hosted
+    runs-on: public-blitzar-T4-gpu-vm
     timeout-minutes: 600
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Run cpp-asan tests
-        run: >
-          TEST_TMPDIR=$HOME/.bazel_test_asan nix develop --command bazel test --config=asan //...
+        run: TEST_TMPDIR=$HOME/.bazel_test_asan nix develop --command bazel test --config=asan //sxt/...
 
   test-rust:
     name: Rust Sys Crate
-    runs-on: self-hosted
+    runs-on: public-blitzar-T4-gpu-vm
     timeout-minutes: 600
     steps:
       - name: Checkout Code

@@ -17,7 +17,9 @@
 #pragma once
 
 #include <algorithm>
+#include <concepts>
 #include <cstddef>
+#include <iterator>
 #include <type_traits>
 #include <utility>
 
@@ -135,6 +137,18 @@ public:
     std::copy(values.begin(), values.end(), this->data());
   }
 
+  template <std::forward_iterator Iter>
+    requires requires(Iter it) {
+      { *it } -> std::convertible_to<T>;
+    }
+  managed_array(Iter first, Iter last, allocator_type alloc = {}) noexcept
+      : data_{reinterpret_cast<void*>(
+                  alloc.allocate(static_cast<size_t>(std::distance(first, last)) * sizeof(T))),
+              static_cast<size_t>(std::distance(first, last)),
+              static_cast<size_t>(std::distance(first, last) * sizeof(T)), alloc} {
+    std::copy(first, last, this->data());
+  }
+
   managed_array(const managed_array& other) noexcept = default;
 
   managed_array(const managed_array& other, allocator_type alloc) noexcept
@@ -206,8 +220,8 @@ private:
 // operator==
 //--------------------------------------------------------------------------------------------------
 template <class T1, class T2>
-auto operator==(const managed_array<T1>& lhs,
-                const managed_array<T2>& rhs) noexcept -> decltype(*lhs.data() == *rhs.data()) {
+auto operator==(const managed_array<T1>& lhs, const managed_array<T2>& rhs) noexcept
+    -> decltype(*lhs.data() == *rhs.data()) {
   if (lhs.size() != rhs.size()) {
     return false;
   }
@@ -218,8 +232,8 @@ auto operator==(const managed_array<T1>& lhs,
 // operator!=
 //--------------------------------------------------------------------------------------------------
 template <class T1, class T2>
-auto operator!=(const managed_array<T1>& lhs,
-                const managed_array<T2>& rhs) noexcept -> decltype(*lhs.data() == *rhs.data()) {
+auto operator!=(const managed_array<T1>& lhs, const managed_array<T2>& rhs) noexcept
+    -> decltype(*lhs.data() == *rhs.data()) {
   return !(lhs == rhs);
 }
 } // namespace sxt::memmg
